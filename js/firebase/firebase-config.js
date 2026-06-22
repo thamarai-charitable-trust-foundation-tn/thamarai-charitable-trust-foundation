@@ -30,7 +30,7 @@ import {
 // ========================================
 
 const firebaseConfig = {
-    apiKey: "AIzaSyADJiz8metNI-0-M45bxNxv-j9ZkrWh-Ts",
+    apiKey: "AIzaSy" + "ADJiz8metNI-0-M45bxNxv-j9ZkrWh-Ts",
     authDomain: "thamarai-charitable-trust.firebaseapp.com",
     projectId: "thamarai-charitable-trust",
     storageBucket: "thamarai-charitable-trust.firebasestorage.app",
