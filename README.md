@@ -1,4 +1,4 @@
-# தாமரை அறக்கட்டளை தொண்டு நிறுவனம்  | Thamarai Charitable Trust Foundation
+#Thamarai Charitable Trust Foundation |  தாமரை அறக்கட்டளை தொண்டு நிறுவனம்
 
 A modern, responsive, and feature-rich web application built for the **Thamarai Charitable Trust Foundation**. This portal serves as a central hub for community engagement, offering public registrations, member portals, blood donation matching, donation processing, and a robust administrator control panel.
 
