@@ -10,11 +10,7 @@ import {
 
     recordLogin,
 
-    sendLoginLink,
-
-    isLoginLink,
-
-    verifyLoginLink
+    signInWithGoogle
 
 }
     from "../firebase/auth.js";
@@ -71,19 +67,18 @@ const logoutNavLi =
         "logoutNavLi"
     );
 
+const googleSignInBtn =
+    document.getElementById(
+        "memberGoogleSignInBtn"
+    );
+
 // ========================================
 // AUTH CHECK
 // ========================================
 
-let isFormSubmitting = false;
-
 watchAuth(
 
     async user => {
-
-        if (isFormSubmitting) {
-            return;
-        }
 
         try {
 
@@ -98,15 +93,6 @@ watchAuth(
                 return;
             }
 
-            await user.reload();
-
-            if (!user.emailVerified) {
-                await logout();
-                showErrorMessage("மின்னஞ்சல் சரிபார்க்கப்படவில்லை. முதலில் உங்கள் மின்னஞ்சலை சரிபார்க்கவும்.");
-                return;
-            }
-
-
             if (logoutNavLi) logoutNavLi.style.display = "block";
 
             const member =
@@ -120,6 +106,9 @@ watchAuth(
                 );
 
             if (!member) {
+                // Signed in with Google but not a registered member
+                await logout();
+                showErrorMessage("இந்த Google கணக்கு உறுப்பினராக பதிவு செய்யப்படவில்லை. முதலில் உறுப்பினராக பதிவு செய்யுங்கள்.");
                 return;
             }
 
@@ -173,157 +162,57 @@ watchAuth(
 );
 
 // ========================================
-// EMAIL SIGN-IN LINK PROCESSOR
+// GOOGLE SIGN-IN HANDLER
 // ========================================
 
-async function checkEmailSignInLink() {
-    try {
-        const currentUrl = window.location.href;
-        if (isLoginLink(currentUrl)) {
-            isFormSubmitting = true;
-
-            if (memberLoginForm) {
-                memberLoginForm.style.display = "none";
-            }
-            showInfoMessage("மின்னஞ்சல் இணைப்பு மூலம் உள்நுழைகிறது, தயவுசெய்து காத்திருக்கவும்...");
-
-            let email = window.localStorage.getItem('emailForSignIn');
-            if (!email) {
-                email = window.prompt("உள்நுழைவை உறுதிப்படுத்த உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும்:");
-            }
-            if (!email) {
-                throw new Error("உள்நுழைய மின்னஞ்சல் முகவரி தேவை.");
-            }
-
-            const user = await verifyLoginLink(email, currentUrl);
-            window.localStorage.removeItem('emailForSignIn');
-
-            await user.reload();
-
-            const member = await getDocument(COLLECTIONS.MEMBERS, user.uid);
-            if (!member) {
-                throw new Error("உறுப்பினர் பதிவு காணப்படவில்லை");
-            }
-
-            if (member.status === MEMBER_STATUS.PENDING) {
-                const loginContainer = document.querySelector(".login-container");
-                if (loginContainer) loginContainer.style.display = "none";
-                const pendingSection = document.getElementById("pendingSection");
-                if (pendingSection) pendingSection.style.display = "block";
-                isFormSubmitting = false;
-                return;
-            }
-
-            if (member.status === MEMBER_STATUS.REJECTED) {
-                const loginContainer = document.querySelector(".login-container");
-                if (loginContainer) loginContainer.style.display = "none";
-                const rejectedSection = document.getElementById("rejectedSection");
-                if (rejectedSection) rejectedSection.style.display = "block";
-                isFormSubmitting = false;
-                return;
-            }
-
-            await recordLogin(user);
-
-            // Clean query params from URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-
-            location.href = "id-card-template.html";
-        }
-    } catch (error) {
-        console.error("Error signing in with email link:", error);
-        showErrorMessage(error.message || "மின்னஞ்சல் மூலம் உள்நுழைய முடியவில்லை. மீண்டும் முயற்சிக்கவும்.");
-        isFormSubmitting = false;
-        if (memberLoginForm) {
-            memberLoginForm.style.display = "block";
-        }
-    }
+if (googleSignInBtn) {
+    googleSignInBtn.addEventListener("click", handleGoogleLogin);
 }
 
-// Check on DOM load
-document.addEventListener("DOMContentLoaded", () => {
-    checkEmailSignInLink();
-});
+async function handleGoogleLogin() {
 
-// ========================================
-// LOGIN
-// ========================================
-
-if (
-    memberLoginForm
-) {
-    memberLoginForm.addEventListener(
-
-        "submit",
-
-        handleLogin
-
-    );
-}
-
-// ========================================
-// HANDLE LOGIN
-// ========================================
-
-async function handleLogin(
-    event
-) {
-    event.preventDefault();
-
-    const submitBtn = memberLoginForm?.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn?.textContent || 'உள்நுழைவு இணைப்பு அனுப்பு';
-
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'அனுப்பப்படுகிறது...';
+    if (googleSignInBtn) {
+        googleSignInBtn.disabled = true;
+        googleSignInBtn.textContent = "உள்நுழைகிறது...";
     }
 
     try {
         hideError();
 
-        const formData =
+        const user = await signInWithGoogle();
 
-            new FormData(
-                memberLoginForm
-            );
-
-        const email =
-            formData.get(
-                "email"
-            )?.trim();
-
-        if (!email) {
-            throw new Error("மின்னஞ்சல் முகவரி தேவை.");
-        }
-
-        // Send login link using Firebase Auth
-        await sendLoginLink(email, window.location.href);
-
-        // Store email to complete sign in later on the same device
-        window.localStorage.setItem('emailForSignIn', email);
-
-        showInfoMessage("உள்நுழைவு இணைப்பு உங்கள் மின்னஞ்சலுக்கு அனுப்பப்பட்டுள்ளது. மின்னஞ்சலைத் திறந்து இணைப்பைக் கிளிக் செய்யவும்.");
+        // Auth state watcher will handle routing based on membership status
+        await recordLogin(user);
 
     }
     catch (error) {
 
-        console.error(
-            error
-        );
+        console.error(error);
+
+        // User cancelled the popup — silently ignore
+        if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
+            return;
+        }
 
         showErrorMessage(
-
             error.message ||
-
-            "இணைப்பு அனுப்ப முடியவில்லை"
-
+            "Google மூலம் உள்நுழைய முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
         );
 
     }
     finally {
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalBtnText;
+        if (googleSignInBtn) {
+            googleSignInBtn.disabled = false;
+            googleSignInBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style="vertical-align:middle;margin-right:10px;">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    <path fill="none" d="M0 0h48v48H0z"/>
+                </svg>
+                Google மூலம் உள்நுழைக
+            `;
         }
     }
 }
