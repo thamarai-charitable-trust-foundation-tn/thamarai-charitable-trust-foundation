@@ -6,7 +6,9 @@ import {
 
     watchAuth,
 
-    logout
+    logout,
+
+    isAdmin
 
 }
     from "../firebase/auth.js";
@@ -78,11 +80,49 @@ const logoutBtn =
 // AUTH CHECK
 // ========================================
 
+const urlParams = new URLSearchParams(window.location.search);
+const memberIdParam = urlParams.get("memberId");
+
 watchAuth(
 
     async user => {
 
-        if (!user || !user.emailVerified) {
+        if (!user) {
+            location.href =
+                "member-login.html";
+
+            return;
+        }
+
+        if (memberIdParam) {
+            try {
+                const adminCheck = await isAdmin(user.uid);
+                const isSelf = user.uid === memberIdParam;
+                if (adminCheck || isSelf) {
+                    await loadMemberCard(memberIdParam);
+                    
+                    // Show a message/spinner or indicator that it is generating
+                    showWarning("அடையாள அட்டை பதிவிறக்கம் செய்யப்படுகிறது... / Downloading ID Card...");
+
+                    // Wait for rendering and image load, then trigger PDF generation
+                    setTimeout(async () => {
+                        await downloadIdCardPDF();
+                        window.close();
+                    }, 2000);
+                    return;
+                } else {
+                    showError("அனுமதி இல்லை / Unauthorized");
+                    showInvalid();
+                    return;
+                }
+            } catch (err) {
+                console.error("Auth check failed:", err);
+                showInvalid();
+                return;
+            }
+        }
+
+        if (!user.emailVerified) {
             if (user) {
                 await logout();
             }
@@ -418,109 +458,99 @@ function setText(
 // PDF DOWNLOAD
 // ========================================
 
+async function downloadIdCardPDF() {
+    try {
+        const card =
+            document.querySelector(
+                ".member-id-card"
+            );
+
+        if (!card) {
+            showError(
+                "அடையாள அட்டை கிடைக்கவில்லை"
+            );
+            return;
+        }
+
+        const canvas =
+            await html2canvas(
+                card,
+                {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: document.documentElement.clientWidth,
+                    windowHeight: document.documentElement.clientHeight
+                }
+            );
+
+        const imageData =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+        const {
+            jsPDF
+        } = window.jspdf;
+
+        const pdf =
+            new jsPDF(
+                "p",
+                "mm",
+                "a4"
+            );
+
+        const pdfWidth = 120;
+
+        const pdfHeight =
+            (
+                canvas.height *
+                pdfWidth
+            ) /
+            canvas.width;
+
+        const xOffset = (210 - pdfWidth) / 2;
+        const yOffset = (297 - pdfHeight) / 2;
+
+        pdf.addImage(
+            imageData,
+            "PNG",
+            xOffset,
+            yOffset,
+            pdfWidth,
+            pdfHeight
+        );
+
+        const memberNumber =
+            document.getElementById(
+                "memberNumber"
+            )?.textContent ||
+            "unknown";
+
+        pdf.save(
+            `member-${memberNumber}.pdf`
+        );
+    }
+    catch (error) {
+        console.error(
+            error
+        );
+
+        showError(
+            "PDF உருவாக்க முடியவில்லை"
+        );
+    }
+}
+
 if (downloadPdfBtn) {
     downloadPdfBtn.addEventListener(
 
         "click",
 
         async () => {
-            try {
-                const card =
-
-                    document.querySelector(
-                        ".member-id-card"
-                    );
-
-                if (!card) {
-
-                    showError(
-                        "அடையாள அட்டை கிடைக்கவில்லை"
-                    );
-
-                    return;
-                }
-
-                const canvas =
-
-                    await html2canvas(
-                        card,
-                        {
-                            scale: 3,
-                            useCORS: true,
-                            allowTaint: false,
-                            scrollX: 0,
-                            scrollY: 0,
-                            windowWidth: document.documentElement.clientWidth,
-                            windowHeight: document.documentElement.clientHeight
-                        }
-                    );
-
-                const imageData =
-                    canvas.toDataURL(
-                        "image/png"
-                    );
-
-                const {
-                    jsPDF
-                } = window.jspdf;
-
-                const pdf =
-                    new jsPDF(
-                        "p",
-                        "mm",
-                        "a4"
-                    );
-
-                const pdfWidth = 120;
-
-                const pdfHeight =
-
-                    (
-                        canvas.height *
-                        pdfWidth
-                    ) /
-                    canvas.width;
-
-                const xOffset = (210 - pdfWidth) / 2;
-                const yOffset = (297 - pdfHeight) / 2;
-
-                pdf.addImage(
-
-                    imageData,
-
-                    "PNG",
-
-                    xOffset,
-
-                    yOffset,
-
-                    pdfWidth,
-
-                    pdfHeight
-
-                );
-
-                const memberNumber =
-
-                    document.getElementById(
-                        "memberNumber"
-                    )?.textContent ||
-
-                    "unknown";
-
-                pdf.save(
-                    `member-${memberNumber}.pdf`
-                );
-            }
-            catch (error) {
-                console.error(
-                    error
-                );
-
-                showError(
-                    "PDF உருவாக்க முடியவில்லை"
-                );
-            }
+            await downloadIdCardPDF();
         }
 
     );
