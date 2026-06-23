@@ -727,6 +727,23 @@ body:has(.sidebar) {
   margin-bottom: 25px;
 }
 
+/* Subtitle description below admin login heading */
+.admin-login-container .login-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Google sign-in button adjustments for admin login centered layout */
+.admin-login-container .google-signin-btn {
+  text-align: center;
+  font-size: 1rem;
+  padding: 14px 20px;
+  margin-bottom: 0;
+}
+
 .admin-login-container form {
   box-shadow: none;
   border: none;
