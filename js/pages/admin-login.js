@@ -12,11 +12,7 @@ import {
 
     isAdmin,
 
-    sendLoginLink,
-
-    isLoginLink,
-
-    verifyLoginLink
+    signInWithGoogle
 
 }
     from "../firebase/auth.js";
@@ -63,27 +59,13 @@ const adminLoginBtn =
 // AUTH CHECK
 // ========================================
 
-let isFormSubmitting = false;
-
 watchAuth(
 
     async user => {
 
-        if (isFormSubmitting) {
-            return;
-        }
-
         try {
 
             if (!user) {
-                return;
-            }
-
-            await user.reload();
-
-            if (!user.emailVerified) {
-                await logout();
-                showErrorMessage("மின்னஞ்சல் சரிபார்க்கப்படவில்லை. முதலில் உங்கள் மின்னஞ்சலை சரிபார்க்கவும்.");
                 return;
             }
 
@@ -100,6 +82,9 @@ watchAuth(
             ) {
                 location.href =
                     "admin-dashboard.html";
+            } else if (!admin) {
+                await logout();
+                showErrorMessage("நிர்வாகி அனுமதி இல்லை. இந்த பக்கத்தை அணுக உங்களுக்கு உரிமை இல்லை.");
             }
 
         }
@@ -116,154 +101,71 @@ watchAuth(
 );
 
 // ========================================
-// EMAIL SIGN-IN LINK PROCESSOR
+// GOOGLE SIGN-IN HANDLER
 // ========================================
 
-async function checkEmailSignInLink() {
-    try {
-        const currentUrl = window.location.href;
-        if (isLoginLink(currentUrl)) {
-            isFormSubmitting = true;
-
-            if (adminLoginForm) {
-                adminLoginForm.style.display = "none";
-            }
-            showInfoMessage("மின்னஞ்சல் இணைப்பு மூலம் உள்நுழைகிறது, தயவுசெய்து காத்திருக்கவும்...");
-
-            let email = window.localStorage.getItem('emailForSignIn');
-            if (!email) {
-                email = window.prompt("உள்நுழைவை உறுதிப்படுத்த உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும்:");
-            }
-            if (!email) {
-                throw new Error("உள்நுழைய மின்னஞ்சல் முகவரி தேவை.");
-            }
-
-            const user = await verifyLoginLink(email, currentUrl);
-            window.localStorage.removeItem('emailForSignIn');
-
-            await user.reload();
-
-            const admin = await isAdmin(user.uid);
-            if (!admin) {
-                throw new Error("நிர்வாகி அனுமதி இல்லை");
-            }
-
-            await recordLogin(user);
-
-            // Clean query params from URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-
-            showSuccess("நிர்வாகி உள்நுழைவு வெற்றிகரமாக முடிந்தது");
-
-            setTimeout(() => {
-                location.href = "admin-dashboard.html";
-            }, 1000);
-        }
-    } catch (error) {
-        console.error("Error signing in with email link:", error);
-        showErrorMessage(error.message || "மின்னஞ்சல் மூலம் உள்நுழைய முடியவில்லை. மீண்டும் முயற்சிக்கவும்.");
-        isFormSubmitting = false;
-        if (adminLoginForm) {
-            adminLoginForm.style.display = "block";
-        }
-    }
+if (adminLoginBtn) {
+    adminLoginBtn.addEventListener("click", handleAdminGoogleLogin);
 }
 
-// Check on DOM load
-document.addEventListener("DOMContentLoaded", () => {
-    checkEmailSignInLink();
-});
-
-// ========================================
-// LOGIN
-// ========================================
-
-if (
-    adminLoginForm
-) {
-    adminLoginForm.addEventListener(
-
-        "submit",
-
-        handleAdminLogin
-
-    );
-}
-
-// ========================================
-// HANDLE LOGIN
-// ========================================
-
-async function handleAdminLogin(
-    event
-) {
-    event.preventDefault();
+async function handleAdminGoogleLogin() {
 
     if (loginLoading) {
-        loginLoading.style.display =
-            "block";
+        loginLoading.style.display = "block";
     }
 
     if (adminLoginBtn) {
-        adminLoginBtn.disabled =
-            true;
+        adminLoginBtn.disabled = true;
     }
 
     try {
         hideError();
 
-        const formData =
+        const user = await signInWithGoogle();
 
-            new FormData(
-                adminLoginForm
-            );
+        const admin = await isAdmin(user.uid);
 
-        const email =
-            formData.get(
-                "email"
-            )?.trim();
-
-        if (!email) {
-            throw new Error("மின்னஞ்சல் முகவரி தேவை.");
+        if (!admin) {
+            await logout();
+            throw new Error("நிர்வாகி அனுமதி இல்லை. இந்த கணக்கு நிர்வாகி கணக்காக பதிவு செய்யப்படவில்லை.");
         }
 
-        // Send login link using Firebase Auth
-        await sendLoginLink(email, window.location.href);
+        await recordLogin(user);
 
-        // Store email to complete sign in later on the same device
-        window.localStorage.setItem('emailForSignIn', email);
+        showSuccess("நிர்வாகி உள்நுழைவு வெற்றிகரமாக முடிந்தது");
+
+        setTimeout(() => {
+            location.href = "admin-dashboard.html";
+        }, 1000);
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        // User cancelled the Google popup — don't show error
+        if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
+            if (loginLoading) loginLoading.style.display = "none";
+            if (adminLoginBtn) adminLoginBtn.disabled = false;
+            return;
+        }
+
+        showErrorMessage(
+            error.message ||
+            "Google மூலம் உள்நுழைய முடியவில்லை"
+        );
 
         if (loginLoading) {
             loginLoading.style.display = "none";
         }
 
-        showInfoMessage("உள்நுழைவு இணைப்பு உங்கள் மின்னஞ்சலுக்கு அனுப்பப்பட்டுள்ளது. மின்னஞ்சலைத் திறந்து இணைப்பைக் கிளிக் செய்யவும்.");
-
-    }
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-        let message =
-            error.message ||
-            "இணைப்பு அனுப்ப முடியவில்லை";
-
-        showErrorMessage(
-            message
-        );
-
-        if (loginLoading) {
-            loginLoading.style.display =
-                "none";
-        }
-
     }
     finally {
         if (adminLoginBtn) {
-            adminLoginBtn.disabled =
-                false;
+            adminLoginBtn.disabled = false;
+        }
+        if (loginLoading) {
+            loginLoading.style.display = "none";
         }
     }
 }
