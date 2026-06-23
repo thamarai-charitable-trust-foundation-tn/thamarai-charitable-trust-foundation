@@ -1184,3 +1184,516 @@
     visibility: visible !important;
   }
 }
+
+/* ==========================================================================
+   TERMS OF USE PAGE — RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* 992px — Tablet Landscape */
+@media (max-width: 992px) {
+  .terms-toc {
+    padding: 28px 30px;
+  }
+
+  .terms-article-header {
+    padding: 22px 28px;
+    gap: 16px;
+  }
+
+  .terms-article-number {
+    font-size: 1.8rem;
+    min-width: 50px;
+  }
+
+  .terms-article-body {
+    padding: 26px 28px;
+  }
+
+  .terms-contact-card {
+    gap: 28px;
+    padding: 32px;
+  }
+}
+
+/* 768px — Tablet Portrait */
+@media (max-width: 768px) {
+  .terms-notice-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    gap: 14px;
+  }
+
+  .terms-toc {
+    padding: 22px 20px;
+  }
+
+  .terms-toc-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-left: 20px;
+  }
+
+  .terms-article-header {
+    padding: 18px 20px;
+    gap: 14px;
+  }
+
+  .terms-article-number {
+    font-size: 1.5rem;
+    min-width: 44px;
+  }
+
+  .terms-article-body {
+    padding: 22px 20px;
+  }
+
+  .terms-ip-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .terms-violations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .terms-contact-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 28px 22px;
+    gap: 22px;
+  }
+
+  .terms-contact-links {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .terms-contact-link {
+    justify-content: center;
+  }
+
+  .terms-law-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .terms-rule-card {
+    gap: 14px;
+    padding: 18px;
+  }
+}
+
+/* 576px — Mobile */
+@media (max-width: 576px) {
+  .terms-hero {
+    padding: 60px 16px 50px 16px;
+  }
+
+  .terms-notice-section {
+    padding: 22px 16px;
+  }
+
+  .terms-toc-section {
+    padding: 36px 16px;
+  }
+
+  .terms-body-section {
+    padding: 14px 16px 60px 16px;
+  }
+
+  .terms-article {
+    margin-bottom: 22px;
+    border-radius: var(--radius-md);
+  }
+
+  .terms-article-header {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .terms-article-number {
+    font-size: 1.3rem;
+    min-width: 38px;
+  }
+
+  .terms-article-header h2 {
+    font-size: 1.05rem;
+  }
+
+  .terms-article-body {
+    padding: 18px 16px;
+  }
+
+  .terms-step {
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 16px;
+  }
+
+  .terms-step-num {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .terms-donation-notice {
+    padding: 20px 18px;
+  }
+
+  .terms-termination-box {
+    padding: 20px 18px;
+  }
+
+  .terms-contact-card {
+    padding: 22px 18px;
+  }
+
+  .terms-contact-icon {
+    width: 58px;
+    height: 58px;
+  }
+
+  .terms-toc {
+    padding: 18px 16px;
+    border-radius: var(--radius-md);
+  }
+}
+
+/* 400px — Very Small Mobile */
+@media (max-width: 400px) {
+  .terms-article-header {
+    padding: 14px;
+  }
+
+  .terms-article-number {
+    font-size: 1.1rem;
+    min-width: 32px;
+  }
+
+  .terms-article-header h2 {
+    font-size: 0.98rem;
+  }
+
+  .terms-article-body {
+    padding: 16px 14px;
+  }
+
+  .terms-violation-item {
+    padding: 16px 14px;
+  }
+
+  .terms-rule-card {
+    padding: 14px 12px;
+  }
+
+  .terms-ip-card {
+    padding: 22px 16px;
+  }
+}
+
+/* ==========================================================================
+   PRIVACY POLICY PAGE — RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* 992px — Tablet Landscape */
+@media (max-width: 992px) {
+  .privacy-toc {
+    padding: 28px 30px;
+  }
+
+  .privacy-article-header {
+    padding: 22px 28px;
+    gap: 16px;
+  }
+
+  .privacy-article-number {
+    font-size: 1.8rem;
+    min-width: 50px;
+  }
+
+  .privacy-article-body {
+    padding: 26px 28px;
+  }
+
+  .privacy-contact-card {
+    gap: 28px;
+    padding: 32px;
+  }
+}
+
+/* 768px — Tablet Portrait */
+@media (max-width: 768px) {
+  .privacy-notice-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    gap: 14px;
+  }
+
+  .privacy-toc {
+    padding: 22px 20px;
+  }
+
+  .privacy-toc-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-left: 20px;
+  }
+
+  .privacy-article-header {
+    padding: 18px 20px;
+    gap: 14px;
+  }
+
+  .privacy-article-number {
+    font-size: 1.5rem;
+    min-width: 44px;
+  }
+
+  .privacy-article-body {
+    padding: 22px 20px;
+  }
+
+  .privacy-security-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .privacy-sharing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .privacy-contact-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 28px 22px;
+    gap: 22px;
+  }
+
+  .privacy-contact-links {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .privacy-contact-link {
+    justify-content: center;
+  }
+
+  .privacy-law-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .privacy-info-card {
+    gap: 14px;
+    padding: 18px;
+  }
+}
+
+/* 576px — Mobile */
+@media (max-width: 576px) {
+  .privacy-hero {
+    padding: 60px 16px 50px 16px;
+  }
+
+  .privacy-notice-section {
+    padding: 22px 16px;
+  }
+
+  .privacy-toc-section {
+    padding: 36px 16px;
+  }
+
+  .privacy-body-section {
+    padding: 14px 16px 60px 16px;
+  }
+
+  .privacy-article {
+    margin-bottom: 22px;
+    border-radius: var(--radius-md);
+  }
+
+  .privacy-article-header {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .privacy-article-number {
+    font-size: 1.3rem;
+    min-width: 38px;
+  }
+
+  .privacy-article-header h2 {
+    font-size: 1.05rem;
+  }
+
+  .privacy-article-body {
+    padding: 18px 16px;
+  }
+
+  .privacy-step {
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 16px;
+  }
+
+  .privacy-step-num {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .privacy-donation-box {
+    padding: 20px 18px;
+  }
+
+  .privacy-contact-card {
+    padding: 22px 18px;
+  }
+
+  .privacy-contact-icon {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+/* 400px — Very Small Mobile */
+@media (max-width: 400px) {
+  .privacy-article-header {
+    padding: 14px;
+  }
+
+  .privacy-article-number {
+    font-size: 1.1rem;
+    min-width: 32px;
+  }
+
+  .privacy-article-header h2 {
+    font-size: 0.98rem;
+  }
+
+  .privacy-article-body {
+    padding: 16px 14px;
+  }
+
+  .privacy-info-card {
+    padding: 14px 12px;
+  }
+
+  .privacy-security-card {
+    padding: 22px 16px;
+  }
+}
+
+/* ==========================================================================
+   LEADER SECTION — RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* 1200px — Large Desktop */
+@media (max-width: 1200px) {
+  .leader {
+    gap: 40px;
+  }
+
+  .leader-image {
+    max-width: 280px;
+  }
+}
+
+/* 992px — Tablet Landscape */
+@media (max-width: 992px) {
+  .leader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .leader-image {
+    max-width: 260px;
+    padding: 20px;
+    margin-bottom: 10px;
+  }
+
+  .leader-details {
+    width: 100%;
+    align-items: center;
+  }
+
+  .leader-details h4 {
+    text-align: center;
+  }
+
+  .leader-about p {
+    text-align: left;
+  }
+}
+
+/* 768px — Tablet Portrait */
+@media (max-width: 768px) {
+  .leader-section {
+    padding: 60px 16px;
+  }
+
+  .leader {
+    gap: 24px;
+  }
+
+  .leader-image {
+    max-width: 220px;
+    padding: 16px;
+  }
+
+  .leader-details h3 {
+    font-size: 1.6rem;
+  }
+
+  .leader-details h4 {
+    font-size: 1rem;
+  }
+
+  .leader-details h5 {
+    font-size: 1rem;
+  }
+
+  .leader-details p {
+    font-size: 0.93rem;
+  }
+}
+
+/* 576px — Mobile Landscape */
+@media (max-width: 576px) {
+  .leader-section {
+    padding: 50px 12px;
+  }
+
+  .leader-image {
+    max-width: 180px;
+    padding: 12px;
+  }
+
+  .leader-details h3 {
+    font-size: 1.4rem;
+  }
+}
+
+/* 400px — Very Small Mobile */
+@media (max-width: 400px) {
+  .leader-image {
+    max-width: 150px;
+    padding: 10px;
+  }
+
+  .leader-details h3 {
+    font-size: 1.2rem;
+  }
+
+  .leader-details p {
+    font-size: 0.88rem;
+  }
+}
