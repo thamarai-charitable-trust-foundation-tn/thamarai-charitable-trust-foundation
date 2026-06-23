@@ -94,7 +94,7 @@ export async function sendMemberStatusNotification(memberEmail, status, name, me
                     </div>
                     <div style="padding: 20px;">
                         <p>அன்புள்ள <strong>${name}</strong>,</p>
-                        <p>தாமரை அறக்கட்டளை தொண்டு நிறுவனத்தில் உறுப்பினராக இணைவதற்கான தங்களது விண்ணப்பம் <strong>ஒப்புதல் (Approved)</strong> செய்யப்பட்டுள்ளது என்பதை மகிழ்ச்சியுடன் தெரிவித்துக் கொள்கிறோம்.</p>
+                        <p>தாமரை தொண்டு நிறுவன அறக்கட்டளையில் உறுப்பினராக இணைவதற்கான தங்களது விண்ணப்பம் <strong>ஒப்புதல் (Approved)</strong> செய்யப்பட்டுள்ளது என்பதை மகிழ்ச்சியுடன் தெரிவித்துக் கொள்கிறோம்.</p>
                         <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 5px solid #4caf50;">
                             <p style="margin: 5px 0;"><strong>உறுப்பினர் எண் (Member ID):</strong> ${memberNumber}</p>
                             <p style="margin: 5px 0;"><strong>நிலை (Status):</strong> Approved (ஏற்றுக்கொள்ளப்பட்டது)</p>
@@ -103,7 +103,7 @@ export async function sendMemberStatusNotification(memberEmail, status, name, me
                         <p style="text-align: center; margin: 30px 0;">
                             <a href="https://thamarai-charitable-trust.firebaseapp.com/member-login.html" style="background-color: #4caf50; color: white; padding: 12px 24px; text-align: center; text-decoration: none; font-weight: bold; border-radius: 5px;">உள்நுழைக | Login</a>
                         </p>
-                        <p>நன்றியுடன்,<br/>தாமரை அறக்கட்டளை தொண்டு நிறுவனம்</p>
+                        <p>நன்றியுடன்,<br/>தாமரை தொண்டு நிறுவன அறக்கட்டளை</p>
                     </div>
                 </div>
             `;
@@ -116,9 +116,9 @@ export async function sendMemberStatusNotification(memberEmail, status, name, me
                     </div>
                     <div style="padding: 20px;">
                         <p>அன்புள்ள <strong>${name}</strong>,</p>
-                        <p>தாமரை அறக்கட்டளை தொண்டு நிறுவனத்தில் உறுப்பினராக இணைவதற்கான தங்களது விண்ணப்பம் தகுந்த காரணங்களால் <strong>நிராகரிக்கப்பட்டுள்ளது (Rejected)</strong> என்பதை வருத்தத்துடன் தெரிவித்துக் கொள்கிறோம்.</p>
+                        <p>தாமரை தொண்டு நிறுவன அறக்கட்டளையில் உறுப்பினராக இணைவதற்கான தங்களது விண்ணப்பம் தகுந்த காரணங்களால் <strong>நிராகரிக்கப்பட்டுள்ளது (Rejected)</strong> என்பதை வருத்தத்துடன் தெரிவித்துக் கொள்கிறோம்.</p>
                         <p>தாங்கள் சமர்ப்பித்த ஆவணங்கள் அல்லது தகவல்கள் எங்கள் அமைப்பின் விதிகளுக்கு உட்படவில்லை. கூடுதல் விவரங்களுக்கு அல்லது ஏதேனும் சந்தேகம் இருந்தால் எங்களைத் தொடர்பு கொள்ளவும்.</p>
-                        <p>நன்றியுடன்,<br/>தாமரை அறக்கட்டளை தொண்டு நிறுவனம்</p>
+                        <p>நன்றியுடன்,<br/>தாமரை தொண்டு நிறுவன அறக்கட்டளை</p>
                     </div>
                 </div>
             `;
