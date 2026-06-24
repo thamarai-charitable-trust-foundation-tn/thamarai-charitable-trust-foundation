@@ -2556,7 +2556,7 @@ button[type="submit"].btn-enabled {
   border-radius: 50% !important;
   object-fit: cover !important;
   object-position: center top !important;
-  border: 2px solid var(--secondary);
+  border: none;
   position: relative;
   z-index: 2;
 }
@@ -2576,7 +2576,7 @@ button[type="submit"].btn-enabled {
   border-radius: 50% !important;
   object-fit: cover !important;
   object-position: center top !important;
-  border: 2px solid var(--secondary);
+  border: none;
   position: relative;
   z-index: 2;
 }
