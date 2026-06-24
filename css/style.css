@@ -2631,11 +2631,11 @@ button[type="submit"].btn-enabled {
   width: 100%;
   box-shadow: none;
   background: transparent;
-  margin-bottom: 0px;
+  margin-bottom: 8px;
 }
 
 .member-details td {
-  padding: 4.2px 2px !important;
+  padding: 3.6px 2px !important;
   border-bottom: none !important;
   font-size: 0.62rem;
   line-height: 1.3;
