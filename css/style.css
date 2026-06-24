@@ -2538,8 +2538,9 @@ button[type="submit"].btn-enabled {
 .header-photos {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 5px;
   margin: 0 auto 6px auto;
 }
 
@@ -2548,6 +2549,7 @@ button[type="submit"].btn-enabled {
   height: 42px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
+  object-position: center top !important;
   border: 1.5px solid var(--secondary);
 }
 
@@ -2563,11 +2565,12 @@ button[type="submit"].btn-enabled {
   height: 30px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
+  object-position: center top !important;
   border: 1.5px solid var(--secondary);
 }
 
 .card-header h1 {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: var(--primary-dark);
   margin-bottom: 2px;
@@ -2582,7 +2585,7 @@ button[type="submit"].btn-enabled {
 }
 
 .card-header h2 {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
   color: #0e0a0a;
   display: inline-block;
@@ -2590,8 +2593,8 @@ button[type="submit"].btn-enabled {
 }
 
 .member-photo {
-  width: 90px !important;
-  height: 105px !important;
+  width: 80px !important;
+  height: 95px !important;
   margin: 0 auto 6px auto;
   border: 2px solid var(--secondary);
   border-radius: var(--radius-sm);
@@ -2617,9 +2620,9 @@ button[type="submit"].btn-enabled {
 }
 
 .member-details td {
-  padding: 3px 4px;
+  padding: 2px 4px;
   border-bottom: 1px dashed var(--border-color);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
 }
 
 .member-details td:first-child {
@@ -2657,12 +2660,12 @@ button[type="submit"].btn-enabled {
 
 .signature-section {
   text-align: right;
-  padding-top: 10px;
+  padding-top: 5px;
   border-top: 1px solid var(--border-color);
 }
 
 .signature-section img {
-  height: 35px;
+  height: 30px;
   max-width: 120px;
   margin-left: auto;
   margin-bottom: 2px;
