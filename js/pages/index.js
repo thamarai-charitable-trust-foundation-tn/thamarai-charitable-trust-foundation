@@ -671,7 +671,7 @@ window.addEventListener("load", () => {
         setTimeout(() => {
             preloader.classList.add("fade-out");
             document.body.classList.remove("preloader-active");
-        }, 100);
+        }, 10);
     }
 });
 
