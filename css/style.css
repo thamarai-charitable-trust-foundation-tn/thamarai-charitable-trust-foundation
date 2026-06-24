@@ -6916,11 +6916,15 @@ body.lightbox-open {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center top;
   border: 3px solid var(--primary);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   display: block;
 }
+
+.footer-founder .founder-avatar-circle {
+  object-position: center top;
+}
+
 .footer-founder {
   display: flex;
   align-items: center;
