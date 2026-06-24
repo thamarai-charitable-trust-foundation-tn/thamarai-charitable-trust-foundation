@@ -667,11 +667,11 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("load", () => {
     const preloader = document.getElementById("preloader");
     if (preloader) {
-        // Wait 1.2 seconds (1200ms) after load
+        // Minimal delay after load for faster UX
         setTimeout(() => {
             preloader.classList.add("fade-out");
             document.body.classList.remove("preloader-active");
-        }, 1200);
+        }, 100);
     }
 });
 
