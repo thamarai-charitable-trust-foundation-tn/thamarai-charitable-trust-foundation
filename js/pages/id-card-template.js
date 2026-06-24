@@ -495,11 +495,17 @@ async function downloadIdCardPDF() {
             jsPDF
         } = window.jspdf;
 
+        // PVC card width is fixed at 54mm; compute height from canvas aspect ratio
+        const pvcWidthMm = 54;
+        const pvcHeightMm = parseFloat(
+            (pvcWidthMm * canvas.height / canvas.width).toFixed(4)
+        );
+
         const pdf =
             new jsPDF({
                 orientation: "portrait",
                 unit: "mm",
-                format: [54, 85.6]
+                format: [pvcWidthMm, pvcHeightMm]
             });
 
         pdf.addImage(
@@ -507,8 +513,8 @@ async function downloadIdCardPDF() {
             "PNG",
             0,
             0,
-            54,
-            85.6
+            pvcWidthMm,
+            pvcHeightMm
         );
 
         const memberNumber =
